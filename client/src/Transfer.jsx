@@ -1,14 +1,11 @@
-import { useState } from "react";
-import server from "./server";
+import { useState } from "react"
+import server from "./server"
 
-function Transfer({ address, setBalance }) {
-  const [sendAmount, setSendAmount] = useState("");
-  const [recipient, setRecipient] = useState("");
-
-  const setValue = (setter) => (evt) => setter(evt.target.value);
+function Transfer({ address, setBalance, sendAmount, setSendAmount, recipient, setRecipient, hashedMsg, signature, setSignature, recoveryBit }) {
+  const setValue = (setter) => (evt) => setter(evt.target.value)
 
   async function transfer(evt) {
-    evt.preventDefault();
+    evt.preventDefault()
 
     try {
       const {
@@ -17,10 +14,13 @@ function Transfer({ address, setBalance }) {
         sender: address,
         amount: parseInt(sendAmount),
         recipient,
-      });
-      setBalance(balance);
+        hashedMsg,
+        signature,
+        recoveryBit,
+      })
+      setBalance(balance)
     } catch (ex) {
-      alert(ex.response.data.message);
+      alert(ex.response.data.message)
     }
   }
 
@@ -30,25 +30,22 @@ function Transfer({ address, setBalance }) {
 
       <label>
         Send Amount
-        <input
-          placeholder="1, 2, 3..."
-          value={sendAmount}
-          onChange={setValue(setSendAmount)}
-        ></input>
+        <input required placeholder="1, 2, 3..." value={sendAmount} onChange={setValue(setSendAmount)}></input>
       </label>
 
       <label>
         Recipient
-        <input
-          placeholder="Type an address, for example: 0x2"
-          value={recipient}
-          onChange={setValue(setRecipient)}
-        ></input>
+        <input required placeholder="Type an address, for example: 0x2" value={recipient} onChange={setValue(setRecipient)}></input>
+      </label>
+
+      <label>
+        Signature
+        <input required style={{ background: "#e2e8f0"}} placeholder="Signature will be auto-filled" value={signature} onChange={setValue(setSignature)} disabled></input>
       </label>
 
       <input type="submit" className="button" value="Transfer" />
     </form>
-  );
+  )
 }
 
-export default Transfer;
+export default Transfer
